@@ -50,9 +50,9 @@ Vuelve a cargar la aplicacion, intenta escribir algo en el formulario y luego da
 
 ### paos 2:  Haz que la abuela tenga logica
 
-Finalmente cambia el archivo `routes/grandma.js` de forma que cuando enviemos un mensaje a la abuela por el formulario haz que este se vea en devuelta en la vista `views/index.ejs`. Basate en la ruta de `routes/index.js` par lograr esto.
+Finalmente cambia el archivo `routes/grandma.js` de forma que cuando enviemos un mensaje a la abuela por el formulario haz que este se vea devuelta en la vista `views/index.ejs`. Basate en la ruta de `routes/index.js` par lograr esto.
 
-Si escribes algo que este todo en mayusculas haz que la abuela responda de forma graciosa. si escribes otra haz que responda 'Hable mas duro!'
+Si escribes algo que este todo en mayusculas haz que la abuela responda de forma graciosa. si escribes algo que tenga letras en minusculas haz que responda 'Hable mas duro!'
 
 Lee la [documentacion de Express](https://expressjs.com/en/guide/routing.html). Para solucionar el reto te daras cuenta de que lo que quieres hacer depues de que se envia el formulario es hacer un `redirect` a `http://localhost:9292/?grandma=foobar` donde `foobar` es lo que quieras que la abuela diga.
 
