@@ -1,6 +1,5 @@
-
-var express    = require('express')        // call express
-var app        = express()                 // define our app using express
+var express    = require('express')
+var app        = express()
 var bodyParser = require('body-parser')
 var Student       = require('./models/student')
 var router = express.Router()
@@ -36,7 +35,7 @@ router.route('/students')
   student.name = req.body.name
   student.save(function(err) {
     if (err) res.send(err)
-    res.json({ message: 'Student created!' })
+    res.json({ student })
   })
 })
 
@@ -44,7 +43,7 @@ router.route('/students/:student_id')
 .get(function(req, res) {
   Student.findById(req.params.student_id, function(err, student) {
     if (err) res.send(err)
-    res.json(student)
+    res.json( student )
   })
 })
 
@@ -53,19 +52,20 @@ router.route('/students/:student_id')
       student.name = req.body.name
       student.save(function(err){
         if (err) res.send(err)
-         res.json({ message: 'Student updated' })
+         res.json( student )
       })
   })
 })
 
 .delete(function(req, res) {
-  Student.remove({
-    _id: req.params.student_id
-  }, function(err, student) {
-    if (err)
-    res.send(err)
-    res.json({ message: 'Successfully deleted' })
+  var tempStudent = Student.findById(req.params.student_id, function(err, tempStudent) {
+    if (err) res.send(err)
+    Student.remove({ _id: req.params.student_id }, function(err, student) {
+      if (err)res.send(err)
+      res.json( tempStudent )
+    })
   })
+
 })
 
 app.use('/api', router)
