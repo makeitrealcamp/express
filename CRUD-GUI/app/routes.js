@@ -11,29 +11,29 @@
     res.json({ message: 'my first Express API' });
   });
 
-  router.route('/bears')
+  router.route('/students')
 
   .post(function(req, res) {
-    var bear = new Bear(req.body);
-    // bear.name = req.body.name;
-    bear.save(function(err) {
+    var student = new Student(req.body);
+    // student.name = req.body.name;
+    student.save(function(err) {
       if (err) res.send(err);
-      res.json({ message: 'Bear created!' });
+      res.json({ message: 'Student created!' });
     });
   })
 
   .get(function(req, res) {
-    Bear.find(function(err, bears) {
+    Student.find(function(err, students) {
       if (err) res.send(err);
-      res.json(bears);
+      res.json(students);
     });
   });
 
-  router.route('/bears/:bear_id')
+  router.route('/students/:student_id')
   .get(function(req, res) {
-    Bear.findById(req.params.bear_id, function(err, bear) {
+    Student.findById(req.params.student_id, function(err, student) {
       if (err) res.send(err);
-      res.json(bear);
+      res.json(student);
     });
   });
 

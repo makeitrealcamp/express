@@ -1,69 +1,73 @@
 
-var express    = require('express');        // call express
-var app        = express();                 // define our app using express
-var bodyParser = require('body-parser');
-var Bear       = require('./models/bear');
-var router = express.Router();
-var mongoose   = require('mongoose');
+var express    = require('express')        // call express
+var app        = express()                 // define our app using express
+var bodyParser = require('body-parser')
+var Student       = require('./models/student')
+var router = express.Router()
+var mongoose   = require('mongoose')
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/expressAPI');
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-var port = process.env.PORT || 8080;
+mongoose.Promise = global.Promise
+mongoose.connect('mongodb://localhost/expressAPI')
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+var port = process.env.PORT || 8080
 
 // middle
-router.use(function(req, res, next) {
-  console.log('Something is happening.');
-  next();
-});
+// router.use(function(req, res, next) {
+//   console.log('Something is happening.')
+//   next()
+// })
 
 router.get('/', function(req, res) {
-  res.json({ message: 'my first Express API' });
-});
-
-router.route('/bears')
-
-.post(function(req, res) {
-  console.log(req.body)
-  var bear = new Bear();
-  console.log(bear);
-  bear.name = req.body.name;
-  console.log(bear);
-  bear.save(function(err) {
-    if (err) res.send(err);
-    res.json({ message: 'Bear created!' });
-  });
+  res.json({ message: 'my first Express API' })
 })
 
+router.route('/students')
+
 .get(function(req, res) {
-  Bear.find(function(err, bears) {
-    if (err) res.send(err);
-    res.json(bears);
-  });
+  Student.find(function(err, students) {
+    if (err) res.send(err)
+    res.json(students)
+  })
+})
+
+.post(function(req, res) {
+  var student = new Student()
+  student.name = req.body.name
+  student.save(function(err) {
+    if (err) res.send(err)
+    res.json({ message: 'Student created!' })
+  })
+})
+
+router.route('/students/:student_id')
+.get(function(req, res) {
+  Student.findById(req.params.student_id, function(err, student) {
+    if (err) res.send(err)
+    res.json(student)
+  })
+})
+
+.patch(function(req, res) {
+  Student.findById(req.params.student_id, function(err, student){
+      student.name = req.body.name
+      student.save(function(err){
+        if (err) res.send(err)
+         res.json({ message: 'Student updated' })
+      })
+  })
 })
 
 .delete(function(req, res) {
-
-  Bear.remove({
-    _id: req.body.bear_id
-  }, function(err, bear) {
+  Student.remove({
+    _id: req.params.student_id
+  }, function(err, student) {
     if (err)
-    res.send(err);
+    res.send(err)
+    res.json({ message: 'Successfully deleted' })
+  })
+})
 
-    res.json({ message: 'Successfully deleted' });
-  });
-});
-
-router.route('/bears/:bear_id')
-.get(function(req, res) {
-  Bear.findById(req.params.bear_id, function(err, bear) {
-    if (err) res.send(err);
-    res.json(bear);
-  });
-});
-
-app.use('/api', router);
-
-app.listen(port);
-console.log('meet me at port: ' + port);
+app.use('/api', router)
+app.listen(port)
+console.log('meet me at port: ' + port)
